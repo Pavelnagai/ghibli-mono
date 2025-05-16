@@ -55,8 +55,6 @@ imagesRouter.post('/', async (c) => {
     const inputImage = formData.get('file') as File;
     const style = formData.get('style') as ImageStyle;
 
-    console.log(formData, 'formData');
-
     if (!inputImage) {
       return c.json({ error: 'No file provided' }, 400);
     }

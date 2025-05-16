@@ -28,7 +28,7 @@ export const App = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [editingImage, setEditingImage] = useState<ProcessedImage | null>(null);
   const [editingStyle, setEditingStyle] = useState<ImageStyle>(ImageStyle.GHIBLI);
-
+  const [regeneratingImageId, setRegeneratingImageId] = useState<string | null>(null);
   const handleImageSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -44,7 +44,6 @@ export const App = () => {
     await getImages(page, 9)
       .then((response) => {
         setTotalPages(response.pagination.totalPages);
-        console.log(response, 'response');
         setProcessedImages(response.images);
 
         return response.images;
@@ -85,8 +84,15 @@ export const App = () => {
   const handleRegenerateConfirm = async () => {
     setEditingImage(null);
     if (!editingImage?.id) return;
+    setRegeneratingImageId(editingImage.id);
     await regenerateImage(editingImage?.id, editingStyle)
-      .then(() => fetchImages())
+      .then(() =>
+        fetchImages()
+          .catch((error) => {
+            console.error('Error regenerating image:', error);
+          })
+          .finally(() => setRegeneratingImageId(null)),
+      )
       .catch((error) => {
         console.error('Error regenerating image:', error);
       });
@@ -103,8 +109,6 @@ export const App = () => {
       document.body.style.overflow = 'auto';
     };
   }, [editingImage]);
-
-  console.log(processedImages, 'processedImages');
 
   return (
     <div className="container" style={{ paddingTop: topSafeAreaOffset }}>
@@ -199,11 +203,15 @@ export const App = () => {
                 className="gallery-image"
               />
               <div className="image-hover-wrapper">
-                <img
-                  src={`http://localhost:9000${image.processedImageUrl}`}
-                  alt="Processed"
-                  className="processed-image"
-                />
+                {regeneratingImageId === image.id ? (
+                  <div className="skeleton-image"></div>
+                ) : (
+                  <img
+                    src={`http://localhost:9000${image.processedImageUrl}`}
+                    alt="Processed"
+                    className="processed-image"
+                  />
+                )}
                 <button
                   className="gallery-image-replace-btn"
                   title="Перегенерировать"

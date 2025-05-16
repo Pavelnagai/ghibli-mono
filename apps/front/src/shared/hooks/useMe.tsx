@@ -7,8 +7,6 @@ export const useMe = () => {
 
   useEffect(() => {
     const lp: LaunchParams = retrieveLaunchParams();
-    console.log(lp);
-
     if (lp.tgWebAppData?.user) {
       setTelegramUser(lp.tgWebAppData.user);
     }

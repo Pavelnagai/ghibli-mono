@@ -10,7 +10,6 @@ declare global {
 
 export const useMocked = () => {
   try {
-    // Проверяем, запущено ли приложение в Telegram
     const isTelegramWebApp = window.Telegram?.WebApp !== undefined;
 
     if (!isTelegramWebApp) {
@@ -30,7 +29,6 @@ export const useMocked = () => {
     };
   } catch (error: unknown) {
     console.error(error);
-    // Если не удалось получить параметры запуска, считаем что мы в режиме разработки
     return {
       isMocked: true,
       isFullscreenMocked: true,
