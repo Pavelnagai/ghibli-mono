@@ -74,8 +74,7 @@ const ensureSingleBucketExists = async (bucketName: string, retries: number = 0)
       console.log(`Bucket ${bucketName} already exists.`);
 
       try {
-        const currentPolicy = await minioClient.getBucketPolicy(bucketName);
-        console.log(`Current bucket policy: ${currentPolicy}`);
+        // const currentPolicy = await minioClient.getBucketPolicy(bucketName);
       } catch (error: any) {
         if (error.code === 'NoSuchBucketPolicy') {
           console.log(`Bucket policy does not exist. Setting new policy.`);

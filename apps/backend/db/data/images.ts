@@ -96,6 +96,7 @@ export async function getImages(
   const images = await db.query.images.findMany({
     offset,
     limit,
+    orderBy: (images, { desc }) => [desc(images.createdAt)],
   });
 
   const totalItems = (await db.query.images.findMany()).length;

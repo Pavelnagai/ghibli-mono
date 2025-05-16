@@ -18,7 +18,7 @@ interface ProcessedImage {
 export const App = () => {
   useMe();
   useTelegram();
-  const { topSafeAreaOffset } = useTopSafeArea(40);
+  const { topSafeAreaOffset } = useTopSafeArea(10);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [processedImages, setProcessedImages] = useState<ProcessedImage[]>([]);
@@ -143,13 +143,6 @@ export const App = () => {
         </button>
       </div>
 
-      {isProcessing && (
-        <div className="skeleton-container">
-          <div className="skeleton-image"></div>
-          <div className="skeleton-text"></div>
-        </div>
-      )}
-
       {editingImage && (
         <div className="editing-container">
           <img
@@ -187,19 +180,29 @@ export const App = () => {
       )}
 
       <div className="gallery">
+        {isProcessing && (
+          <div className="skeleton-container">
+            <img
+              className="skeleton-image"
+              src={selectedImage ? URL.createObjectURL(selectedImage) : ''}
+              alt="Selected image preview"
+            />
+            <div className="skeleton-image"></div>
+          </div>
+        )}
         {processedImages.map((image: ProcessedImage) => (
           <div key={image.id} className="gallery-item">
             <div className="image-container">
               <img
                 src={`http://localhost:9000${image.url}`}
-                alt="Processed"
+                alt="Original"
                 className="gallery-image"
               />
               <div className="image-hover-wrapper">
                 <img
                   src={`http://localhost:9000${image.processedImageUrl}`}
                   alt="Processed"
-                  className="gallery-image processed-image"
+                  className="processed-image"
                 />
                 <button
                   className="gallery-image-replace-btn"
