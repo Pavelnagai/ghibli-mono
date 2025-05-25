@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+   "target": "es2017",
+   "module": "CommonJS",
+   "moduleResolution": "node",
+   "lib": ["es2017", "esnext.asynciterable"],
+   "strict": true,
+   "esModuleInterop": true,
+   "skipLibCheck": true,
+   "forceConsistentCasingInFileNames": true,
+   "outDir": "./dist",
+   "rootDir": "./",
+   "typeRoots": [
+    "./node_modules/@types",
+    "src/shared/types",
+    "src/core/types"
+   ],
+   "paths": {
+    "@shared/*": ["src/shared/*"],
+    "@routes/*": ["src/routes/*"],
+    "@routes": ["src/routes/index.ts"],
+    "@infra/*": ["src/infra/*"],
+    "@middlewares/*": ["src/middlewares/*"],
+    "@middlewares": ["src/middlewares/index.ts"],
+    "@modules/*": ["src/modules/*"],
+    "@modules": ["src/modules/index.ts"],
+    "@tools/*": ["src/tools/*"],
+    "@tools": ["src/tools/index.ts"]
+   },
+   "baseUrl": "."
+  },
+  "include": [
+   "api/**/*.ts",
+   "db/**/*.ts",
+   "services/**/*.ts",
+   "types/**/*.ts",
+   "openai/**/*.ts"
+  ],
+  "exclude": ["node_modules", "dist"]
+ }
