@@ -35,10 +35,8 @@ app.use(
       return null;
     },
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowHeaders: ['Content-Type', 'Authorization'],
-    exposeHeaders: ['Content-Length', 'X-Kuma-Revision'],
+    allowHeaders: ['Content-Type', 'Accept', 'Origin'],
     maxAge: 86400,
-    credentials: true,
   }),
 );
 
