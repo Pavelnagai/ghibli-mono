@@ -45,6 +45,10 @@ app.use(
   }),
 );
 
+app.options('*', (c) => {
+  return c.json({ message: 'OK' }, 200);
+});
+
 app.get('/', (c) => {
   return c.text('Hello, i am alive!');
 });
