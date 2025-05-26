@@ -1,5 +1,4 @@
 import { Hono } from 'hono';
-import { cors } from 'hono/cors';
 import { checkConnection as checkMinioConnection } from '../db/minio/client.js';
 import { HTTPException } from 'hono/http-exception';
 import { config } from '../db/config.js';

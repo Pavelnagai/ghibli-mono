@@ -36,11 +36,12 @@ imagesRouter.get('/:id', validateId, async (c) => {
 
 imagesRouter.post('/', async (c) => {
   try {
-    const formData = await c.req.formData();
-    const inputImage = formData.get('file') as File | null;
-    const style = formData.get('style') as ImageStyle | null;
+    const body = await c.req.parseBody();
 
-    if (!inputImage || !style) {
+    const inputImage = body['file'] as File;
+    const style = body['style'] as ImageStyle | undefined;
+
+    if (!inputImage || !style || typeof style !== 'string') {
       return c.json({ error: 'Missing file or style' }, 400);
     }
 
@@ -54,12 +55,12 @@ imagesRouter.post('/', async (c) => {
 
     return c.json({ result: 'Successfully generated image' }, 201);
   } catch (error) {
-    console.error('Error in /api/images POST:', error);
+    console.error('Error in POST /api/images:', error);
     return c.json(
       {
         error: error instanceof Error ? error.message : 'Internal server error',
       },
-      500,
+      500
     );
   }
 });

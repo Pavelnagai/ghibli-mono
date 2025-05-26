@@ -46,15 +46,10 @@ export async function createItem({ inputImage, outputImage, style }: CreateImage
     outputImage.type,
   );
 
-  const now = new Date();
-
   await db.insert(images).values({
-    id: nanoid(),
     url: inputImageUrl,
     processedImageUrl: outputImageUrl,
     style,
-    createdAt: now,
-    updatedAt: now,
   });
 }
 
