@@ -17,38 +17,6 @@ const initialize = async () => {
   }
 };
 
-app.use(
-  '*',
-  cors({
-    origin: (origin) => {
-      const allowedOrigins = [
-        'http://localhost:5173',
-        'https://stylish-images.ru',
-        'https://ghible.netlify.app',
-      ];
-
-      if (!origin) return null;
-      if (
-        allowedOrigins.includes(origin) ||
-        origin.endsWith('.stylish-images.ru') ||
-        origin.includes('.telegram.org') ||
-        origin.includes('.t.me')
-      ) {
-        return origin;
-      }
-
-      return null;
-    },
-    allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowHeaders: ['Content-Type', 'Accept', 'Origin'],
-    maxAge: 86400,
-  }),
-);
-
-app.options('*', (c) => {
-  return c.json({ message: 'OK' }, 200);
-});
-
 app.get('/', (c) => {
   return c.text('Hello, i am alive!');
 });
