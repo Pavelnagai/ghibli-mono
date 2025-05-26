@@ -35,25 +35,33 @@ imagesRouter.get('/:id', validateId, async (c) => {
 });
 
 imagesRouter.post('/', async (c) => {
-  const formData = await c.req.formData();
-  const inputImage = formData.get('file') as File;
-  const style = formData.get('style') as ImageStyle;
-  const { outputImage } = await generateImage(inputImage, style as ImageStyle);
+  try {
+    const formData = await c.req.formData();
+    const inputImage = formData.get('file') as File | null;
+    const style = formData.get('style') as ImageStyle | null;
 
-  await createItem({
-    inputImage,
-    outputImage,
-    style,
-  }).catch((error) => {
+    if (!inputImage || !style) {
+      return c.json({ error: 'Missing file or style' }, 400);
+    }
+
+    const { outputImage } = await generateImage(inputImage, style);
+
+    await createItem({
+      inputImage,
+      outputImage,
+      style,
+    });
+
+    return c.json({ result: 'Successfully generated image' }, 201);
+  } catch (error) {
+    console.error('Error in /api/images POST:', error);
     return c.json(
       {
-        error: error instanceof Error ? error.message : 'Failed to create image',
+        error: error instanceof Error ? error.message : 'Internal server error',
       },
       500,
     );
-  });
-
-  return c.json({ result: 'Successfully generated image' }, 201);
+  }
 });
 
 imagesRouter.delete('/:id', validateId, async (c) => {
