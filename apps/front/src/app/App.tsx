@@ -1,12 +1,12 @@
 import './App.css';
-import { useMe } from '@/shared/hooks/useMe';
+// import { useMe } from '@/shared/hooks/useMe';
 // import { useTelegram } from '@/shared/hooks/useTelegram';
 import { useTopSafeArea } from '@/shared/hooks/useTopSafeArea';
 import { BrowserRouter } from 'react-router-dom';
 import Router from './providers/router';
 
 export const App = () => {
-  useMe();
+  // useMe();
   // useTelegram();
   const { topSafeAreaOffset } = useTopSafeArea(10);
 
