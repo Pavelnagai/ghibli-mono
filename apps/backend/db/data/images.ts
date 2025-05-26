@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm';
+import { eq, desc, sql } from 'drizzle-orm';
 import { images } from '../schema/images.js';
 import { uploadFile } from '../minio/client.js';
 import { ImageStyle } from '../../types/styles.js';
@@ -94,21 +94,25 @@ export async function getImages(
   pagination: { currentPage: number; totalItems: number; limit: number; totalPages: number };
 }> {
   const offset = (page - 1) * limit;
-  const images = await db.query.images.findMany({
-    offset,
-    limit,
-    orderBy: (images: any, { desc }: { desc: any }) => [desc(images.createdAt)],
-  });
 
-  const totalItems = (await db.query.images.findMany()).length;
+  const items = await db
+    .select()
+    .from(images)
+    .orderBy(desc(images.createdAt))
+    .limit(limit)
+    .offset(offset);
+
+  const [{ count }] = await db.select({ count: sql<number>`COUNT(*)` }).from(images);
+  const totalItems = Number(count);
+  const totalPages = Math.ceil(totalItems / limit);
 
   return {
-    images: images,
+    images: items,
     pagination: {
       currentPage: page,
       totalItems,
       limit,
-      totalPages: totalItems / limit,
+      totalPages,
     },
   };
 }

@@ -35,34 +35,28 @@ imagesRouter.get('/:id', validateId, async (c) => {
 });
 
 imagesRouter.post('/', async (c) => {
-  try {
-    const formData = await c.req.formData();
-    const inputImage = formData.get('file') as File;
-    const style = formData.get('style') as ImageStyle;
+  const formData = await c.req.formData();
+  const inputImage = formData.get('file') as File;
+  const style = formData.get('style') as ImageStyle;
+  const { outputImage } = await generateImage(inputImage, style as ImageStyle);
 
-    console.log(inputImage, style, 'inputImage, style');
-
-    const { outputImage } = await generateImage(inputImage, style as ImageStyle);
-
-    await createItem({
-      inputImage,
-      outputImage,
-      style,
-    });
-
-    return c.json({ result: 'Successfully generated image' }, 201);
-  } catch (error) {
-    console.error('Error creating image:', error);
+  await createItem({
+    inputImage,
+    outputImage,
+    style,
+  }).catch((error) => {
     return c.json(
       {
         error: error instanceof Error ? error.message : 'Failed to create image',
       },
       500,
     );
-  }
+  });
+
+  return c.json({ result: 'Successfully generated image' }, 201);
 });
 
-imagesRouter.delete('/:id', async (c) => {
+imagesRouter.delete('/:id', validateId, async (c) => {
   const id = c.req.param('id');
   await deleteImage(id).catch(() => {
     return c.json({ error: 'Image not found' }, 404);
@@ -80,30 +74,22 @@ imagesRouter.put(
     }),
   ),
   async (c) => {
-    try {
-      const id = await c.req.param('id');
-      const { style } = await c.req.json();
-      const image = await getImage(id);
+    const id = await c.req.param('id');
+    const { style } = await c.req.json();
+    const image = await getImage(id);
 
-      if (!image) {
-        return c.json({ error: 'Image not found' }, 404);
-      }
-
-      const inputImage = await fetchImageAsFile(image.url);
-      const { outputImage } = await generateImage(inputImage, style);
-
-      await updateItem(id, outputImage, style);
-
-      return c.json({ result: 'Successfully regenerated image' }, 200);
-    } catch (error) {
-      console.error('Error regenerating image:', error);
-      return c.json(
-        {
-          error: error instanceof Error ? error.message : 'Failed to regenerate image',
-        },
-        500,
-      );
+    if (!image) {
+      return c.json({ error: 'Image not found' }, 404);
     }
+
+    const inputImage = await fetchImageAsFile(image.url);
+    const { outputImage } = await generateImage(inputImage, style);
+
+    await updateItem(id, outputImage, style).catch(() => {
+      return c.json({ error: 'Failed to regenerate image' }, 500);
+    });
+
+    return c.json({ result: 'Successfully regenerated image' }, 200);
   },
 );
 

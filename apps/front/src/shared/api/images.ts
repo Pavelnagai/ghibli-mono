@@ -1,9 +1,15 @@
 import { ImageStyle } from '@/shared/types';
 import { client } from './client';
+import { ProcessedImage } from '../store/images.store';
 
-export const getImages = async (page: number, limit: number) => {
+type GetImagesResponse = {
+  images: ProcessedImage[];
+  pagination: { totalPages: number };
+};
+
+export const getImages = async (page: number, limit: number): Promise<GetImagesResponse> => {
   const response = await client.images.$get({ query: { page, limit } });
-  return response.json();
+  return response.json() as Promise<GetImagesResponse>;
 };
 
 export const getImage = async (id: string) => {

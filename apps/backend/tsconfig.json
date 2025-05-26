@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
    "target": "es2017",
-   "module": "CommonJS",
-   "moduleResolution": "node",
+   "module": "node16",
+   "moduleResolution": "node16",
    "lib": ["es2017", "esnext.asynciterable"],
    "strict": true,
    "esModuleInterop": true,

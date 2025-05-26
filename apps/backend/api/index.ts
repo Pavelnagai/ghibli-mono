@@ -17,29 +17,6 @@ const initialize = async () => {
   }
 };
 
-// app.use(
-//   '*',
-//   cors({
-//     origin: (origin) => {
-//       if (!origin) return '*';
-//       if (
-//         origin === 'http://localhost:5173' ||
-//         origin === 'https://stylish-images.ru' ||
-//         origin === 'https://ghible.netlify.app' ||
-//         origin.endsWith('.stylish-images.ru') ||
-//         origin.includes('.telegram.org') ||
-//         origin.includes('.t.me')
-//       ) {
-//         return origin;
-//       }
-//       return null;
-//     },
-//     credentials: true,
-//     allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-//     allowHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
-//   }),
-// );
-
 app.use(
   '*',
   cors({

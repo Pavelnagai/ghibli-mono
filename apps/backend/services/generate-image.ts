@@ -12,26 +12,28 @@ export const generateImage = async (
   image: File,
   style: ImageStyle,
 ): Promise<{ outputImage: File }> => {
-  console.log('Starting image generation with style:', style);
   const base64Image = await fileToBase64(image);
-  console.log('Image converted to base64');
-
   const tempFilePath = `temp-${Date.now()}.png`;
   try {
     fs.writeFileSync(tempFilePath, Buffer.from(base64Image, 'base64'));
-    console.log('Temporary file created at:', tempFilePath);
 
     const imageFile = await toFile(fs.createReadStream(tempFilePath), null, {
       type: 'image/png',
     });
-    console.log('Image file prepared for OpenAI');
 
-    const prompt = `Create a high-quality image based on the provided source image, carefully preserving its intricate details, composition, and key elements. Transform the overall style into ${style} art style, while maintaining the original's essence. Pay close attention to lighting, textures, and fine details to ensure a cohesive and visually striking result. Adjust colors, shading, and stylistic features to align with the chosen art style, but keep the core subject and composition recognizable.`;
+    const prompt = `Act as a professional visual artist and art stylist with deep knowledge
+    of historical and contemporary art styles. Transform the provided source image into a
+    high-quality artwork in the ${style} art style. Carefully preserve intricate details, composition,
+    and key visual elements from the original image.
+    Adjust colors, lighting, shading, and textures to match the chosen style while
+    maintaining the subject's identity and visual integrity.
+    Ensure that the final result reflects both the essence of the original and the artistic
+    characteristics of ${style} in a cohesive and visually striking way.
+    The image should be in the same style as the source image, but with the chosen art style.`;
 
-    console.log('Sending request to OpenAI...');
     const response = await openaiClient.images
       .edit({
-        model: 'dall-e-2',
+        model: 'gpt-image-1',
         image: imageFile,
         prompt,
         n: 1,
@@ -47,7 +49,6 @@ export const generateImage = async (
         throw error;
       });
 
-    console.log('Received response from OpenAI');
     if (!response.data?.[0]?.b64_json) {
       throw new Error('Failed to generate image');
     }
@@ -65,7 +66,6 @@ export const generateImage = async (
     try {
       if (fs.existsSync(tempFilePath)) {
         fs.unlinkSync(tempFilePath);
-        console.log('Temporary file cleaned up');
       }
     } catch (error) {
       console.error('Error cleaning up temporary file:', error);
