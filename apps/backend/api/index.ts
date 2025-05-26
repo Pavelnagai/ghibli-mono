@@ -21,17 +21,22 @@ app.use(
   '*',
   cors({
     origin: (origin) => {
-      if (!origin) return '*';
+      const allowedOrigins = [
+        'http://localhost:5173',
+        'https://stylish-images.ru',
+        'https://ghible.netlify.app',
+      ];
+
+      if (!origin) return null;
       if (
-        origin === 'http://localhost:5173' ||
-        origin === 'https://stylish-images.ru' ||
-        origin === 'https://ghible.netlify.app' ||
+        allowedOrigins.includes(origin) ||
         origin.endsWith('.stylish-images.ru') ||
         origin.includes('.telegram.org') ||
         origin.includes('.t.me')
       ) {
         return origin;
       }
+
       return null;
     },
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
