@@ -32,11 +32,11 @@ app.use(
       ) {
         return origin;
       }
-      return null;
+      return '';
     },
-    credentials: true,
+    credentials: false,
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
+    allowHeaders: ['Content-Type', 'X-Requested-With', 'Accept', 'Origin'],
   }),
 );
 
