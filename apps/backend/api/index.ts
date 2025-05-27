@@ -18,26 +18,26 @@ const initialize = async () => {
 };
 
 app.use(
-  '*',
-  cors({
-    origin: (origin) => {
-      if (!origin) return '*';
-      if (
-        origin === 'http://localhost:5173' ||
-        origin === 'https://stylish-images.ru' ||
-        origin === 'https://ghible.netlify.app' ||
-        origin.endsWith('.stylish-images.ru') ||
-        origin.includes('.telegram.org') ||
-        origin.includes('.t.me')
-      ) {
-        return origin;
-      }
-      return '';
-    },
-    credentials: false,
-    allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowHeaders: ['Content-Type', 'X-Requested-With', 'Accept', 'Origin'],
-  }),
+  cors(),
+  // cors({
+  //   origin: (origin) => {
+  //     if (!origin) return '*';
+  //     if (
+  //       origin === 'http://localhost:5173' ||
+  //       origin === 'https://stylish-images.ru' ||
+  //       origin === 'https://ghible.netlify.app' ||
+  //       origin.endsWith('.stylish-images.ru') ||
+  //       origin.includes('.telegram.org') ||
+  //       origin.includes('.t.me')
+  //     ) {
+  //       return origin;
+  //     }
+  //     return '';
+  //   },
+  //   credentials: false,
+  //   allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  //   allowHeaders: ['Content-Type', 'X-Requested-With', 'Accept', 'Origin'],
+  // }),
 );
 
 app.get('/', (c) => {
