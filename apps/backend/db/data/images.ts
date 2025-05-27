@@ -76,10 +76,9 @@ export const updateItem = async (id: string, outputImage: File, style: ImageStyl
 };
 
 export async function getImage(id: string): Promise<Image | null> {
-  const result = await db.query.images.findFirst({
-    where: eq(images.id, id),
-  });
-  return result || null;
+  const result = await db.select().from(images).where(eq(images.id, id)).limit(1);
+
+  return result.length > 0 ? result[0] : null;
 }
 
 export async function getImages(
