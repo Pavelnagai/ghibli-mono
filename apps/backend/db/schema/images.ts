@@ -5,7 +5,7 @@ import { nanoid } from 'nanoid';
 export const images = pgTable('images', {
   id: text('id')
     .primaryKey()
-    .$defaultFn(() => nanoid(8)),
+    .$defaultFn(() => nanoid()),
   url: text('url').notNull(),
   processedImageUrl: text('processed_image_url').notNull(),
   style: text('style').$type<ImageStyle>().notNull(),
