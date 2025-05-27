@@ -76,8 +76,10 @@ export const updateItem = async (id: string, outputImage: File, style: ImageStyl
 };
 
 export async function getImage(id: string): Promise<Image | null> {
+  console.log(id, 'id');
   const result = await db.select().from(images).where(eq(images.id, id)).limit(1);
 
+  console.log(result, 'result');
   return result.length > 0 ? result[0] : null;
 }
 
