@@ -3,7 +3,9 @@ import { ImageStyle } from '../../types/styles.js';
 import { nanoid } from 'nanoid';
 
 export const images = pgTable('images', {
-  id: text('id').default(nanoid()).primaryKey(),
+  id: text('id')
+    .primaryKey()
+    .$defaultFn(() => nanoid(8)),
   url: text('url').notNull(),
   processedImageUrl: text('processed_image_url').notNull(),
   style: text('style').$type<ImageStyle>().notNull(),
