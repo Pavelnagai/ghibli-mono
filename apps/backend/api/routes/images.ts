@@ -36,8 +36,8 @@ imagesRouter.get('/:id', validateId, async (c) => {
 
 imagesRouter.post('/', async (c) => {
   try {
+    c.header('Access-Control-Allow-Origin', '*');
     const body = await c.req.parseBody();
-
     const inputImage = body['file'] as File;
     const style = body['style'] as ImageStyle | undefined;
 
