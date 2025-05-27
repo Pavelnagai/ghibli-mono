@@ -67,6 +67,7 @@ export const updateItem = async (id: string, outputImage: File, style: ImageStyl
   await db
     .update(images)
     .set({
+      id: nanoid(8),
       processedImageUrl: outputImageUrl,
       style,
       updatedAt: new Date(),
