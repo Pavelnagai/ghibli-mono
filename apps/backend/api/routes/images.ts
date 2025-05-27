@@ -99,15 +99,15 @@ imagesRouter.post('/', async (c) => {
     // then the Hono process itself might be exiting.
 
     // Attempt to send a response if we reach here, but the main goal is to see the logs above.
-    if (!c.res.headersSent) {
-      // Hono might not have this exact property, check Hono docs for checking if response sent
-      return c.json(
-        {
-          error: error instanceof Error ? error.message : 'Internal server error after logging',
-        },
-        500,
-      );
-    }
+    // if (!c.res.) {
+    //   // Hono might not have this exact property, check Hono docs for checking if response sent
+    //   return c.json(
+    //     {
+    //       error: error instanceof Error ? error.message : 'Internal server error after logging',
+    //     },
+    //     500,
+    //   );
+    // }
   }
 });
 
